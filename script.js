@@ -1,6 +1,18 @@
-var btn = document.getElementsByName('play')[0],
-  text = document.createElement('p');
-  document.body.appendChild(text);
+var freqs = {
+  65: 261.6256,
+  87: 277.1826,
+  83: 293.6648,
+  69: 311.1270,
+  68: 329.6276,
+  70: 349.2282,
+  84: 369.9944,
+  71: 391.9954,
+  89: 415.3047,
+  72: 440,
+  85: 466.1638,
+  74: 493.8833,
+  75: 523.2511
+};
 
 function osc(wave, freq, amp, dur) {
   var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
@@ -16,11 +28,17 @@ function osc(wave, freq, amp, dur) {
   osc.stop(dur);
 
   osc.onended = function() {
-    text.innerHTML = 'Done playing.';
+    //
   }
 }
 
-btn.addEventListener('click', () => {
-  text.innerHTML = 'Playing...';
-  osc('square', 440, 0.5, 1);
+window.addEventListener('keydown', (e) => {
+  var keyCodes = Object.keys(freqs),
+    key = e.keyCode.toString();
+
+  if (!keyCodes.includes(key)) {
+    return;
+  }
+
+  osc('square', freqs[parseInt(key)], 0.4, 1);
 });
