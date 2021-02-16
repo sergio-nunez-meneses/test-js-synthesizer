@@ -1,4 +1,6 @@
-osc('square', 440, 0.5, 1);
+var btn = document.getElementsByName('play')[0],
+  text = document.createElement('p');
+  document.body.appendChild(text);
 
 function osc(wave, freq, amp, dur) {
   var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
@@ -14,6 +16,11 @@ function osc(wave, freq, amp, dur) {
   osc.stop(dur);
 
   osc.onended = function() {
-    console.log('Done playing.');
+    text.innerHTML = 'Done playing.';
   }
 }
+
+btn.addEventListener('click', () => {
+  text.innerHTML = 'Playing...';
+  osc('square', 440, 0.5, 1);
+});
