@@ -34,11 +34,11 @@ function osc(wave, freq, amp, dur) {
 
 window.addEventListener('keydown', (e) => {
   var keyCodes = Object.keys(freqs),
-    key = e.keyCode.toString();
+    key = e.keyCode;
 
-  if (!keyCodes.includes(key)) {
+  if (!keyCodes.includes(key.toString())) {
     return;
   }
 
-  osc('square', freqs[parseInt(key)], 0.4, 1);
+  osc('square', freqs[key], 0.4, 1);
 });
