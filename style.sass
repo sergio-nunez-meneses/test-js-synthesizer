@@ -27,19 +27,23 @@ body
 
 .keyboard-container
   align-self: center
-  box-shadow: 0 8px 10px 1px #ddd
 
 .key
   float: left
   position: relative
-  border: $key-borders solid $white-keys-border-color
 
 .white
   width: $white-keys-vw
   height: $white-keys-vh
+  border: $key-borders solid $white-keys-border-color
+  border-right: none
   background-color: $white-keys-color
 
 .black
   width: $black-keys-vw
   height: $black-keys-vh
-  background-color: $black-keys-color
+  border: $key-borders solid $black-keys-border-color
+  background-color: $black-keys-border-color
+
+.white, .black
+  box-shadow: 0px 5px 1px rgba(32,32,32,0.2)
