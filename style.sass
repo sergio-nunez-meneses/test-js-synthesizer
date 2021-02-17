@@ -1,7 +1,11 @@
 $keyboard-vw: 80vw
-$keyboard-vh: ($keyboard-vw * 0.18)
+$keyboard-vh: ($keyboard-vw * 0.18) // 14.4vw
+$key-borders: ($keyboard-vw * 0.0015) // 0.12vw
 
-$white-keys-color: #cbcbcb
+$white-keys-total: 8
+$white-keys-vw: ($keyboard-vw / $white-keys-total) // 10vw
+
+$white-keys-color: #fbfbfb
 $black-keys-color: #222222
 $white-keys-border-color: #aaaaaa
 $black-keys-border-color: #000000
@@ -10,13 +14,19 @@ body
   margin: 0
 
 body
-	height: 640px
+	height: $keyboard-vh
 	display: flex
 	margin: auto
-	justify-content: center
+  justify-content: center
+  align-items: center
 
-.piano-container
-  width: 95vw
-  height: 70vh
+.keyboard-container
   align-self: center
   box-shadow: 0 8px 10px 1px #ddd
+
+.key
+  width: $white-keys-vw
+  height: $keyboard-vh
+  float: left
+  position: relative
+  border: $key-borders solid $white-keys-border-color
