@@ -15,7 +15,20 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
     75: 523.2511
   },
   notesOn = {},
-  note;
+  note,
+  keys = getBy('class', 'key');
+
+function getBy(attribute, value) {
+  if (attribute === 'tag') {
+    return document.getElementsByTagName(value);
+  } else if (attribute === 'id') {
+    return document.getElementById(value);
+  } else if (attribute === 'name') {
+    return document.getElementsByName(value)[0];
+  } else if (attribute === 'class') {
+    return document.getElementsByClassName(value);
+  }
+}
 
 function scaleInput(input, r1, r2) {
   return (input - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
@@ -79,7 +92,6 @@ document.addEventListener('keydown', (e) => {
   notesOn[key] = note;
   note.attack();
 
-  console.log('pressed:', note);
   console.log('pressed:', notesOn);
 });
 
