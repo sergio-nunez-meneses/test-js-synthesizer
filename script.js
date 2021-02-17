@@ -17,6 +17,10 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
   voices = {},
   voice;
 
+function scaleInput(input, r1, r2) {
+  return (input - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+}
+
 function validKeys(e, key) {
   if (e.repeat) {
     return false;
@@ -58,7 +62,9 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
-  voice = osc('square', freqs[key], 0.125);
+  var dB = scaleInput(-18, [-75, 0], [0, 1]);
+
+  voice = osc('square', freqs[key], dB);
   voices[key] = e.type == 'keydown';
 
   console.log('pressed:', voice);
