@@ -5,8 +5,9 @@ $key-borders: ($keyboard-vw * 0.0015) // 0.12vw
 $white-keys-total: 13
 $white-keys-vw: ($keyboard-vw / $white-keys-total) // 10vw
 $white-keys-vh: $keyboard-vh
-$black-keys-vw: ($white-keys-vw  * 0.75) // 4.61538vw
+$black-keys-vw: ($white-keys-vw  * 0.55) // 3.38462vw
 $black-keys-vh: ($white-keys-vh * 0.55) // 11vw
+$black-keys-offset: (-($black-keys-vw / 2) - $key-borders) // -2.42769vw
 
 $white-keys-color: #fbfbfb
 $black-keys-color: #222222
@@ -44,6 +45,10 @@ body
   height: $black-keys-vh
   border: $key-borders solid $black-keys-border-color
   background-color: $black-keys-border-color
+  z-index: 2
 
 .white, .black
-  box-shadow: 0px 5px 1px rgba(32,32,32,0.2)
+  box-shadow: 0px 5px 1px rgba(32 ,32 , 32, 0.2)
+
+.black, [data-note="a"], [data-note="b"], [data-note="d"], [data-note="e"], [data-note="g"]
+  margin: 0 0 0 $black-keys-offset
