@@ -1,10 +1,12 @@
 $keyboard-vw: 80vw
-$keyboard-vh: ($keyboard-vw * 0.18) // 14.4vw
+$keyboard-vh: ($keyboard-vw * 0.25) // 20vw
 $key-borders: ($keyboard-vw * 0.0015) // 0.12vw
 
 $white-keys-total: 13
 $white-keys-vw: ($keyboard-vw / $white-keys-total) // 10vw
 $white-keys-vh: $keyboard-vh
+$black-keys-vw: ($white-keys-vw  * 0.75) // 4.61538vw
+$black-keys-vh: ($white-keys-vh * 0.55) // 11vw
 
 $white-keys-color: #fbfbfb
 $black-keys-color: #222222
@@ -36,3 +38,8 @@ body
   width: $white-keys-vw
   height: $white-keys-vh
   background-color: $white-keys-color
+
+.black
+  width: $black-keys-vw
+  height: $black-keys-vh
+  background-color: $black-keys-color
