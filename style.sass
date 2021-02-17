@@ -1,13 +1,13 @@
 $keyboard-vw: 100vw
-$keyboard-vh: ($keyboard-vw * 0.25) // 20vw
-$key-borders: ($keyboard-vw * 0.0015) // 0.12vw
+$keyboard-vh: ($keyboard-vw * 0.25) // 25vw
+$key-borders: ($keyboard-vw * 0.0015) // 0.15vw
 
 $white-keys-total: 13
-$white-keys-vw: ($keyboard-vw / $white-keys-total) // 10vw
+$white-keys-vw: ($keyboard-vw / $white-keys-total) // 7.69231vw
 $white-keys-vh: $keyboard-vh
-$black-keys-vw: ($white-keys-vw  * 0.55) // 3.38462vw
-$black-keys-vh: ($white-keys-vh * 0.55) // 11vw
-$black-keys-offset: (-($black-keys-vw / 2) - $key-borders) // -2.42769vw
+$black-keys-vw: ($white-keys-vw  * 0.55) // 4.23077vw
+$black-keys-vh: ($white-keys-vh * 0.6125) // 15.3125vw
+$black-keys-offset: (-($black-keys-vw / 2) - $key-borders) // -2.26538vw
 
 $white-keys-color: #fbfbfb
 $black-keys-color: #222222
@@ -58,5 +58,5 @@ body
     margin-top: 5px
     box-shadow: none
 
-.black, [data-note="a"], [data-note="b"], [data-note="d"], [data-note="e"], [data-note="g"]
+.black, [data-note="a4"], [data-note="b4"], [data-note="d4"], [data-note="e4"], [data-note="g4"]
   margin: 0 0 0 $black-keys-offset

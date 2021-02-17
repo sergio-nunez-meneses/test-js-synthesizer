@@ -14,9 +14,50 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
     74: 493.8833,
     75: 523.2511
   },
-  notesOn = {},
-  note,
-  keys = getBy('class', 'key');
+  codesToNotes = {
+    65: 'c4',
+    87: 'c#4',
+    83: 'd4',
+    69: 'd#4',
+    68: 'e4',
+    70: 'f4',
+    84: 'f#4',
+    71: 'g4',
+    89: 'g#4',
+    72: 'a4',
+    85: 'a#4',
+    74: 'b4',
+    75: 'c5'
+  },
+  notesToFreqs = {
+    'c4': 261.6256,
+    'c#4': 277.1826,
+    'd4': 293.6648,
+    'd#4': 311.1270,
+    'e4': 329.6276,
+    'f4': 349.2282,
+    'f#4': 369.9944,
+    'g4': 391.9954,
+    'g#4': 415.3047,
+    'a4': 440,
+    'a#4': 466.1638,
+    'b4': 493.8833,
+    'c5': 523.2511
+  },
+  notesTracker = {},
+  note;
+
+var keyboardContainer = getBy('class', 'keyboard-container')[0];
+
+var eventStart, eventEnd;
+
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  eventStart = 'touchstart';
+  eventEnd = 'touchcancel';
+} else {
+  eventStart = 'keydown';
+  eventEnd = 'keyup';
+}
 
 function getBy(attribute, value) {
   if (attribute === 'tag') {
@@ -39,12 +80,13 @@ function validKeys(e, key) {
     return false;
   }
 
-  var keyCodes = Object.keys(freqs),
-    key = e.keyCode;
+  var keyCodes = Object.keys(freqs);
 
   if (!keyCodes.includes(key.toString())) {
     return false;
   }
+
+  // prevent key combinations such as cmd+alt+k
 
   return key;
 }
@@ -79,7 +121,7 @@ class Voice {
   }
 };
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener(eventStart, (e) => {
   var key = validKeys(e, e.keyCode);
 
   if (key === false) {
@@ -89,21 +131,37 @@ document.addEventListener('keydown', (e) => {
   var dB = scaleInput(-30, [-75, 0], [0, 1]);
 
   note = new Voice('square', freqs[key], dB);
-  notesOn[key] = note;
+  notesTracker[key] = note;
   note.attack();
 
-  console.log('pressed:', notesOn);
+  // console.log('pressed:', notesTracker);
 });
 
-document.addEventListener('keyup', (e) => {
+document.addEventListener(eventEnd, (e) => {
   var key = validKeys(e, e.keyCode);
 
   if (key === false) {
     return;
   }
 
-  notesOn[key].release();
-  delete notesOn[key];
+  notesTracker[key].release();
+  delete notesTracker[key];
 
-  console.log('released:', notesOn);
+  // console.log('released:', notesTracker);
+});
+
+keyboardContainer.addEventListener('mousedown', (e) => {
+  var key = e.target.dataset.note,
+    dB = scaleInput(-30, [-75, 0], [0, 1]);
+
+  note = new Voice('square', notesToFreqs[key], dB);
+  notesTracker[key] = note;
+  note.attack();
+});
+
+keyboardContainer.addEventListener('mouseup', (e) => {
+  var key = e.target.dataset.note;
+
+  notesTracker[key].release();
+  delete notesTracker[key];
 });
