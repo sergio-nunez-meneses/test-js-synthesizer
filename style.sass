@@ -1,4 +1,4 @@
-$keyboard-vw: 80vw
+$keyboard-vw: 100vw
 $keyboard-vh: ($keyboard-vw * 0.25) // 20vw
 $key-borders: ($keyboard-vw * 0.0015) // 0.12vw
 
@@ -34,6 +34,9 @@ body
 
 .keyboard-container
   align-self: center
+
+  & .key:last-child
+    border-right: $key-borders solid $white-keys-border-color
 
 .key
   float: left
