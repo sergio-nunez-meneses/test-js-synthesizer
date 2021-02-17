@@ -4,6 +4,7 @@ $key-borders: ($keyboard-vw * 0.0015) // 0.12vw
 
 $white-keys-total: 13
 $white-keys-vw: ($keyboard-vw / $white-keys-total) // 10vw
+$white-keys-vh: $keyboard-vh
 
 $white-keys-color: #fbfbfb
 $black-keys-color: #222222
@@ -27,8 +28,11 @@ body
   box-shadow: 0 8px 10px 1px #ddd
 
 .key
-  width: $white-keys-vw
-  height: $keyboard-vh
   float: left
   position: relative
   border: $key-borders solid $white-keys-border-color
+
+.white
+  width: $white-keys-vw
+  height: $white-keys-vh
+  background-color: $white-keys-color
