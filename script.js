@@ -53,7 +53,7 @@ var eventStart, eventEnd;
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   eventStart = 'touchstart';
-  eventEnd = 'touchcancel';
+  eventEnd = 'touchend';
 } else {
   eventStart = 'keydown';
   eventEnd = 'keyup';
@@ -68,11 +68,9 @@ function getBy(attribute, value) {
     return document.getElementsByName(value)[0];
   } else if (attribute === 'class') {
     return document.getElementsByClassName(value);
+  } else if (attribute === 'query') {
+    return document.querySelector(value);
   }
-}
-
-function scaleInput(input, r1, r2) {
-  return (input - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
 }
 
 function validKeys(e, key) {
@@ -89,6 +87,24 @@ function validKeys(e, key) {
   // prevent key combinations such as cmd+alt+k
 
   return key;
+}
+
+function getKeyDiv(key) {
+  var keyData = codesToNotes[key];
+
+  return getBy('query', `[data-note="${keyData}"]`);
+}
+
+function handleKeyPressedClass(key) {
+  if (!key.classList.contains('key-pressed')) {
+    key.classList.add('key-pressed');
+  } else {
+    key.classList.remove('key-pressed');
+  }
+}
+
+function scaleInput(input, r1, r2) {
+  return (input - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
 }
 
 class Voice {
@@ -128,11 +144,14 @@ document.addEventListener(eventStart, (e) => {
     return;
   }
 
-  var dB = scaleInput(-30, [-75, 0], [0, 1]);
+  var keyDiv = getKeyDiv(key),
+    dB = scaleInput(-30, [-75, 0], [0, 1]);
 
   note = new Voice('square', freqs[key], dB);
   notesTracker[key] = note;
   note.attack();
+
+  handleKeyPressedClass(keyDiv);
 
   // console.log('pressed:', notesTracker);
 });
@@ -144,35 +163,32 @@ document.addEventListener(eventEnd, (e) => {
     return;
   }
 
+  var keyDiv = getKeyDiv(key);
+
   notesTracker[key].release();
   delete notesTracker[key];
+
+  handleKeyPressedClass(keyDiv);
 
   // console.log('released:', notesTracker);
 });
 
 keyboardContainer.addEventListener('mousedown', (e) => {
-  var key = e.target;
-
-  if (!key.classList.contains('key-pressed')) {
-    key.classList.add('key-pressed');
-  }
-
-  var dB = scaleInput(-30, [-75, 0], [0, 1]);
-  key = key.dataset.note;
+  var key = e.target.dataset.note,
+    dB = scaleInput(-30, [-75, 0], [0, 1]);
 
   note = new Voice('square', notesToFreqs[key], dB);
   notesTracker[key] = note;
   note.attack();
+
+  handleKeyPressedClass(e.target);
 });
 
 keyboardContainer.addEventListener('mouseup', (e) => {
-  var key = e.target;
+  var key = e.target.dataset.note;
 
-  if (key.classList.contains('key-pressed')) {
-    key.classList.remove('key-pressed');
-  }
-
-  key = key.dataset.note;
   notesTracker[key].release();
   delete notesTracker[key];
+
+  handleKeyPressedClass(e.target);
 });
