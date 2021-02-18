@@ -151,8 +151,14 @@ document.addEventListener(eventEnd, (e) => {
 });
 
 keyboardContainer.addEventListener('mousedown', (e) => {
-  var key = e.target.dataset.note,
-    dB = scaleInput(-30, [-75, 0], [0, 1]);
+  var key = e.target;
+
+  if (!key.classList.contains('key-pressed')) {
+    key.classList.add('key-pressed');
+  }
+
+  var dB = scaleInput(-30, [-75, 0], [0, 1]);
+  key = key.dataset.note;
 
   note = new Voice('square', notesToFreqs[key], dB);
   notesTracker[key] = note;
@@ -160,8 +166,13 @@ keyboardContainer.addEventListener('mousedown', (e) => {
 });
 
 keyboardContainer.addEventListener('mouseup', (e) => {
-  var key = e.target.dataset.note;
+  var key = e.target;
 
+  if (key.classList.contains('key-pressed')) {
+    key.classList.remove('key-pressed');
+  }
+
+  key = key.dataset.note;
   notesTracker[key].release();
   delete notesTracker[key];
 });
